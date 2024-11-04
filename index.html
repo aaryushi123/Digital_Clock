@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Clock</title>
+</title>
+<style>
+    body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background: linear-gradient(135deg, rgb(216, 67, 127), rgb(121, 195, 238)); /* Gradient background */
+        color: white;
+        font-family: 'Arial', sans-serif;
+    }
+
+    .clock {
+        font-size: 60px; /* Increased font size for impact */
+        background: transparent; /* Fully transparent background */
+        padding: 20px;
+        border-radius: 15px;
+        box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.5); /* Subtle shadow for depth */
+        text-align: center;
+        transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth transition for hover effects */
+    }
+
+    .clock:hover {
+        transform: scale(1.1); /* Slightly enlarge on hover */
+        box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.7); /* Enhance shadow on hover */
+    }
+
+    .clock span {
+        display: block;
+    }
+
+    .clock .time {
+        font-size: 1em; /* Enlarged time */
+        font-weight: bold;
+        color: black;
+    }
+
+    .clock .date {
+        font-size: 0.5em; /* Smaller date */
+        color: #5f5d5d;
+    }
+</style>
+</head>
+<body>
+    <div id="root"></div>
+    
+    <script src="https://unpkg.com/react@17/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone@7/babel.min.js"></script>
+    
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        const DigitalClock = () => {
+            const [time, setTime] = useState(new Date());
+
+            useEffect(() => {
+                const intervalId = setInterval(() => {
+                    setTime(new Date());
+                }, 1000);
+
+                return () => clearInterval(intervalId);
+            }, []);
+
+            const formatTime = (date) => {
+                return date.toLocaleTimeString('en-US', {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit',
+                });
+            };
+
+            const formatDate = (date) => {
+                return date.toDateString();
+            };
+
+            return (
+                <div className="clock">
+                    <span className="time">{formatTime(time)}</span>
+                    <span className="date">{formatDate(time)}</span>
+                </div>
+            );
+        };
+
+        ReactDOM.render(<DigitalClock />, document.getElementById('root'));
+    </script>
+</body>
+</html>
